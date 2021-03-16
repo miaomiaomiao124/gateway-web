@@ -1,0 +1,25 @@
+import layoutMain from '@/views/layout/index'
+
+
+// 由于懒加载页面太多的话会造成webpack热更新太慢，所以开发环境不使用懒加载，只有生产环境使用懒加载
+const _import = require('@/utils/util.import.' + process.env.NODE_ENV)
+
+const meta = { auth: true }
+
+export default {
+  path: '/',
+  redirect: { name: 'index' },
+  meta: {
+    title: 'test',
+    auth: true
+  },
+  component: layoutMain,
+  children: (pre => [
+    {
+      path: 'test',
+      name: `${pre}index`,
+      component: _import('test/index.vue'),
+      meta: { ...meta, title: 'test' }
+    }
+  ])('test-')
+}
